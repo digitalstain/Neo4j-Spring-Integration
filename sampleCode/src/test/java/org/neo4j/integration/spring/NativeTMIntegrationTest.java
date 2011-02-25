@@ -20,25 +20,15 @@ import org.springframework.transaction.jta.JtaTransactionManager;
 
 import com.springsource.transaction.core.TransactionService;
 
-@ContextConfiguration(
-        locations = { "classpath:spring-native-tx-test-context.xml" } )
 public class NativeTMIntegrationTest extends BaseTMIntegrationTest
 {
-    private static boolean recovered = false;
-
-    @Override
-    public void setUp() throws Exception
-    {
-        super.setUp();
-        if ( !recovered )
-        {
-            System.out.println( "Recovering" );
-            getContext().getBean( "TransactionService",
-                    TransactionService.class ).recover(
-                    new LinkedList<XAResource>() );
-            recovered = true;
-        }
-    }
+	@Before
+	public void recover()
+	{
+        getContext().getBean( "TransactionService",
+                TransactionService.class ).recover(
+                new LinkedList<XAResource>() );
+	}
 
     @Override
     protected String getConfigName()

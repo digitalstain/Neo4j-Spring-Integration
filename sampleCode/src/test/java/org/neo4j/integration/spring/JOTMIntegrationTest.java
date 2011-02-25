@@ -16,7 +16,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.transaction.jta.JtaTransactionManager;
 import org.springframework.transaction.jta.ManagedTransactionAdapter;
 
-@ContextConfiguration(locations={"classpath:spring-jotm-tx-test-context.xml"})
 public class JOTMIntegrationTest extends BaseTMIntegrationTest
 {
     @Override

@@ -14,9 +14,9 @@
 	<context:annotation-config />
 	<context:spring-configured />
 
-	<bean id="TransactionService" class="org.neo4j.spring_tx.SpringTSFactoryBean"/>
+	<bean id="TransactionService" class="org.neo4j.integration.spring.SpringTSFactoryBean"/>
 	
-	<bean id="nativeTM" class="org.neo4j.spring_tx.SpringTMFactoryBean" depends-on="TransactionService">
+	<bean id="nativeTM" class="org.neo4j.integration.spring.SpringTMFactoryBean" depends-on="TransactionService">
 	<property name = "transactionService" ref="TransactionService"/> 
 	</bean>
 
@@ -37,11 +37,10 @@
 		</constructor-arg>
 	</bean>
 
-	<bean id="dataSource"
-		class="org.springframework.jdbc.datasource.SingleConnectionDataSource">
-		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
+	<bean id="dataSource" class="org.enhydra.jdbc.standard.StandardXADataSource">
+		<property name="driverName" value="com.mysql.jdbc.Driver" />
 		<property name="url" value="jdbc:mysql://localhost/sample" />
-		<property name="username" value="root" />
+		<property name="user" value="root" />
 		<property name="password" value="1" />
 	</bean>
 

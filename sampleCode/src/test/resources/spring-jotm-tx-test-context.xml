@@ -29,7 +29,7 @@
 	</bean>
 
 	<bean class="org.neo4j.kernel.EmbeddedGraphDatabase"
-		destroy-method="shutdown" depends-on="JtaTransactionManager">
+		destroy-method="shutdown" depends-on="JtaTransactionManager" scope="prototype">
 		<constructor-arg value="target/test-db" />
 		<constructor-arg>
 			<map>
