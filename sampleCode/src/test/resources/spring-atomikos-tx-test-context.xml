@@ -10,12 +10,11 @@
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
 		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
-
-	<context:annotation-config />
-	<context:spring-configured />
+	
+	<import resource="base-tx-test-context.xml"/>
 
 	<!-- Construct Atomikos UserTransactionManager, needed to configure Spring -->
-	<bean id="AtomikosTransactionManager" class="com.atomikos.icatch.jta.UserTransactionManager"
+	<bean id="atomikosTransactionManager" class="com.atomikos.icatch.jta.UserTransactionManager"
 		init-method="init" destroy-method="close">
 
 		<!-- when close is called, should we force transactions to terminate or 
@@ -24,38 +23,24 @@
 	</bean>
 
 	<!-- Also use Atomikos UserTransactionImp, needed to configure Spring -->
-	<bean id="AtomikosUserTransaction" class="com.atomikos.icatch.jta.UserTransactionImp">
-
+	<bean id="atomikosUserTransaction" class="com.atomikos.icatch.jta.UserTransactionImp">
 		<property name="transactionTimeout" value="300" />
 	</bean>
 
 	<!-- Configure the Spring framework to use JTA transactions from Atomikos -->
-	<bean id="JtaTransactionManager"
+	<bean id="jtaTransactionManager"
 		class="org.springframework.transaction.jta.JtaTransactionManager">
-		<property name="transactionManager" ref="AtomikosTransactionManager" />
-		<property name="userTransaction" ref="AtomikosUserTransaction" />
+		<property name="transactionManager" ref="atomikosTransactionManager" />
+		<property name="userTransaction" ref="atomikosUserTransaction" />
 	</bean>
 
-
-
-	<bean class="org.neo4j.kernel.EmbeddedGraphDatabase"
-		destroy-method="shutdown" scope="singleton">
-		<constructor-arg value="target/test-db" />
+	<!-- Needed to provide the location of the transactions.property files -->
+	<bean id="userTransactionService" class="com.atomikos.icatch.config.UserTransactionServiceImp">
 		<constructor-arg>
-			<map>
-				<entry key="tx_manager_impl" value="spring-jta" />
-			</map>
+			<props>
+				<prop key="com.atomikos.icatch.file">../resources/transactions.properties" </prop>
+			</props>
 		</constructor-arg>
-
 	</bean>
 
-	<bean id="dataSource" class="org.enhydra.jdbc.standard.StandardXADataSource">
-		<property name="driverName" value="com.mysql.jdbc.Driver" />
-		<property name="url" value="jdbc:mysql://localhost/sample" />
-		<property name="user" value="root" />
-		<property name="password" value="1" />
-	</bean>
-
-	<tx:annotation-driven mode="aspectj"
-		transaction-manager="transactionManager" />
 </beans>

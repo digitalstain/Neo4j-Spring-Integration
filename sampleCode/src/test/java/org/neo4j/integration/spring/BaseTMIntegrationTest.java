@@ -9,13 +9,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 import javax.sql.XADataSource;
-import javax.transaction.NotSupportedException;
-import javax.transaction.SystemException;
 import javax.transaction.Transaction;
 import javax.transaction.UserTransaction;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
@@ -26,12 +25,18 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.transaction.jta.JtaTransactionManager;
 
+/**
+ * Base class that outlines the expected behaviour of every transaction manager.
+ * Sublasses are expected to override the <code>getConfigName()</code> to return
+ * a String with the name of their configuration file and provide any
+ * implementation specific configuration via <code>@Before</code> and
+ * <code>@After</code> methods.
+ * 
+ * @author Chris Gioran
+ */
 public abstract class BaseTMIntegrationTest {
 
-	private ApplicationContext ctx;
-
-	public abstract void testLoadConfig() throws SystemException,
-			NotSupportedException;
+	protected ApplicationContext ctx;
 
 	protected GraphDatabaseService gds;
 	protected XADataSource ds;
@@ -41,12 +46,21 @@ public abstract class BaseTMIntegrationTest {
 		super();
 	}
 
+	/**
+	 * Hook for testing the loaded configuration. Can be no-op.
+	 */
+	@Test
+	public void testLoadConfig() throws Exception
+	{}
+
 	@Before
 	public void setUp() throws Exception {
 		ctx = new ClassPathXmlApplicationContext(getConfigName());
-		tm = ctx.getBean("JtaTransactionManager", JtaTransactionManager.class);
+		tm = ctx.getBean("jtaTransactionManager", JtaTransactionManager.class);
 		gds = ctx.getBean(GraphDatabaseService.class);
 		ds = ctx.getBean("dataSource", XADataSource.class);
+		ds.getXAConnection().getConnection()
+				.prepareStatement("delete from Node").execute();
 	}
 
 	@After
@@ -54,6 +68,12 @@ public abstract class BaseTMIntegrationTest {
 		gds.shutdown();
 	}
 
+	/**
+	 * Tests just the graph database with some indexing on top.
+	 * Writes a node into the database, indexes it, commits and
+	 * then reads it back, once without a transaction running and
+	 * once with. 
+	 */
 	@Test
 	public void testIndexDependencies() throws Exception {
 		UserTransaction tx = tm.getUserTransaction();
@@ -75,20 +95,26 @@ public abstract class BaseTMIntegrationTest {
 		tx.commit();
 	}
 
+	/**
+	 * Reads in the id of every node in the database, outside
+	 * of any transaction. 
+	 */
 	@Test
-	public void testReadOutsideTx() throws Exception {
+	public void testReadOutsideTx() {
 		for (Node n : gds.getAllNodes()) {
 			n.getId();
 		}
 	}
 
 	@Test
+	@Ignore
 	public void testJustMySQL() throws Exception {
 		ds.getXAConnection().getConnection()
 				.prepareStatement("select * from Node").execute();
 	}
 
 	@Test
+	@Ignore
 	public void testBothSimpleInsert() throws Exception {
 		UserTransaction tx = tm.getUserTransaction();
 		try {
@@ -119,6 +145,7 @@ public abstract class BaseTMIntegrationTest {
 	}
 
 	@Test
+	@Ignore
 	public void testBothSimpleInsertRollback() throws Exception {
 		tm.getTransactionManager().begin();
 		Transaction tx = tm.getTransactionManager().getTransaction();
@@ -150,10 +177,9 @@ public abstract class BaseTMIntegrationTest {
 		assertEquals(0, rs.getInt(1));
 	}
 
-	protected ApplicationContext getContext() {
-		return ctx;
-	}
-
+	/**
+	 * @return Returns the filename of the configuration file for the test.
+	 */
 	protected abstract String getConfigName();
 
 }
