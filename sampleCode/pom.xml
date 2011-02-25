@@ -149,6 +149,18 @@
 		</dependency>
 
 		<dependency>
+			<groupId>org.springsource</groupId>
+			<artifactId>transaction-core</artifactId>
+			<version>1.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springsource</groupId>
+			<artifactId>transaction-log</artifactId>
+			<version>1.0</version>
+		</dependency>
+
+		<dependency>
 			<groupId>org.neo4j.jta</groupId>
 			<artifactId>atomikos-service-provider</artifactId>
 			<version>0.0.1</version>

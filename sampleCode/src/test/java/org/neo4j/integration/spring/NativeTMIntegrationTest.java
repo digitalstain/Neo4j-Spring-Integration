@@ -1,4 +1,4 @@
-package org.neo4j.spring_tx;
+package org.neo4j.integration.spring;
 
 import static org.junit.Assert.assertEquals;
 

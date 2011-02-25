@@ -1,4 +1,4 @@
-package org.neo4j.spring_tx;
+package org.neo4j.integration.spring;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -20,7 +20,6 @@ import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.NotFoundException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.springframework.jdbc.datasource.DataSourceUtils;
 import org.springframework.transaction.jta.JtaTransactionManager;
 
 public abstract class BaseTMIntegrationTest
