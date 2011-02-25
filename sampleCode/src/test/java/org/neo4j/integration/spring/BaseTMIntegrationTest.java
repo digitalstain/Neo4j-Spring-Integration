@@ -49,7 +49,7 @@ public abstract class BaseTMIntegrationTest
     public void setUp() throws Exception
     {
 //        ctx = new ClassPathXmlApplicationContext( getConfigName() );
-        ctx.getBean(SpringServiceImpl.class).begin();
+//        ctx.getBean(SpringServiceImpl.class).begin();
         tm = ctx.getBean( "JtaTransactionManager", JtaTransactionManager.class );
         gds = ctx.getBean( GraphDatabaseService.class );
 

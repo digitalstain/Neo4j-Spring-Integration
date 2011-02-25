@@ -28,8 +28,6 @@
 		<property name="password" value="1" />
 	</bean>
 
-	<bean class="org.neo4j.jta.spring.SpringServiceImpl" depends-on="JtaTransactionManager" />
-
 	<bean class="org.neo4j.kernel.EmbeddedGraphDatabase"
 		destroy-method="shutdown" depends-on="JtaTransactionManager">
 		<constructor-arg value="target/test-db" />

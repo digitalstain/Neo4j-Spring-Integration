@@ -27,7 +27,6 @@ import org.neo4j.kernel.impl.transaction.TransactionManagerProvider;
 import org.neo4j.kernel.impl.transaction.TxFinishHook;
 import org.springframework.beans.factory.annotation.Configurable;
 
-@Configurable
 @Service.Implementation( TransactionManagerProvider.class )
 public class SpringProvider extends TransactionManagerProvider
 {
