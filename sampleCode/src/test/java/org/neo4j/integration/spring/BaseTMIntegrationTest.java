@@ -15,16 +15,22 @@ import javax.transaction.Transaction;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.NotFoundException;
+import org.neo4j.jta.spring.SpringServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.jta.JtaTransactionManager;
 
+@RunWith(SpringJUnit4ClassRunner.class)
 public abstract class BaseTMIntegrationTest
 {
 
+	@Autowired
     private ApplicationContext ctx;
 
     public abstract void testLoadConfig() throws SystemException,
@@ -42,11 +48,12 @@ public abstract class BaseTMIntegrationTest
     @Before
     public void setUp() throws Exception
     {
-        ctx = new ClassPathXmlApplicationContext( getConfigName() );
+//        ctx = new ClassPathXmlApplicationContext( getConfigName() );
+        ctx.getBean(SpringServiceImpl.class).begin();
+        tm = ctx.getBean( "JtaTransactionManager", JtaTransactionManager.class );
         gds = ctx.getBean( GraphDatabaseService.class );
 
         ds = ctx.getBean( "dataSource", XADataSource.class );
-        tm = ctx.getBean( "JtaTransactionManager", JtaTransactionManager.class );
 //        StandardXADataSource xa = (StandardXADataSource) ds;
 //        ds.setTransactionManager( tm.getTransactionManager() );
     }

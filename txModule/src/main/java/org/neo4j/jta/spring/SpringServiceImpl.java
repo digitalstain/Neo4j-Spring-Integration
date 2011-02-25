@@ -39,9 +39,9 @@ import org.springframework.transaction.jta.JtaTransactionManager;
  * @author Chris Gioran
  */
 @Configurable
-class SpringServiceImpl extends AbstractTransactionManager
+public class SpringServiceImpl extends AbstractTransactionManager
 {
-    @Autowired
+	@Autowired(required = true)
     private JtaTransactionManager jtaTransactionManager;
 
     private TransactionManager delegate;
