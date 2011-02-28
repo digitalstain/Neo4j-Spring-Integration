@@ -1,0 +1,31 @@
+This project is composed of two parts. One is a ready-to-go pluggable @Service implementation that if enabled through the configuration allows Neo4j to work with an
+external transaction manager provided and abstracted over by Spring. This lives in txModule. The other is some sample code that demonstrates use of this module in
+a configured Spring setup using three different JTS implementations. JOTM, Atomikos and Spring's Transaction Manager. While the first is available through maven, the
+other two aren't. To install them and get the project to compile, some steps are needed on your part.
+
+To install Atomikos Essentials, you will have to go to
+
+http://www.atomikos.com/Main/TransactionsEssentialsDownloadForm
+
+complete the registration/download process, unpack the archive and install in maven the following jars by issuing:
+
+mvn install:install-file -DgroupId=com.atomikos -DartifactId=atomikos-util -Dpackaging=jar -Dversion=3.7.0M5 -Dfile=atomikos-util.jar -DgeneratePom=true
+mvn install:install-file -DgroupId=com.atomikos -DartifactId=transactions -Dpackaging=jar -Dversion=3.7.0M5 -Dfile=transactions.jar -DgeneratePom=true
+mvn install:install-file -DgroupId=com.atomikos -DartifactId=transactions-api -Dpackaging=jar -Dversion=3.7.0M5 -Dfile=transactions-api.jar -DgeneratePom=true
+mvn install:install-file -DgroupId=com.atomikos -DartifactId=transactions-jta -Dpackaging=jar -Dversion=3.7.0M5 -Dfile=transactions-jta.jar -DgeneratePom=true
+mvn install:install-file -DgroupId=com.atomikos -DartifactId=transactions-osgi -Dpackaging=jar -Dversion=3.7.0M5 -Dfile=transactions-osgi.jar -DgeneratePom=true
+
+To install the Spring Transaction Manager git clone the following url:
+
+git://git.springsource.org/transaction-manager/transaction-manager.git
+
+and in the resulting directory go to build-transaction and execute ant. Things should compile from there with a potential problem being that you
+miss a clover licence. In this case just edit build-transaction/build.xml and from the precommit target remove the clover dependency. The resulting
+artifacts are in com.springsource.transaction.core/target/artifacts/ and com.springsource.transaction.log/target/artifacts/
+
+Install them:
+
+mvn install:install-file -DgroupId=org.springsource -DartifactId=transaction-core -Dpackaging=jar -Dversion=1.0 -Dfile=com.springsource.transaction.core.jar -DgeneratePom=true
+mvn install:install-file -DgroupId=org.springsource -DartifactId=transaction-log -Dpackaging=jar -Dversion=1.0 -Dfile=com.springsource.transaction.log.jar -DgeneratePom=true
+
+Now all dependencies are met and the demo project should compile
