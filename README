@@ -1,6 +1,17 @@
-This project is composed of two parts. One is a ready-to-go pluggable @Service implementation that if enabled through the configuration allows Neo4j to work with an
-external transaction manager provided and abstracted over by Spring. This lives in txModule. The other is some sample code that demonstrates use of this module in
-a configured Spring setup using three different JTS implementations. JOTM, Atomikos and Spring's Transaction Manager. While the first is available through maven, the
+Overview
+--------
+
+This repository contains 2 different projects. One is a @Service loadable module for getting Neo4j to use a transaction manager through the Spring
+exposed interfaces. This is an actually useful implementation, ready to be plugged in your project or to be looked at to help you create a more
+customized solution.
+The other is a demo project that shows how to use the module above, including the configuration needed on Spring's part. A thorough examination of the
+procedure, the mechanics and the rationale behind this code can be found at:
+
+http://digitalstain.blogspot.com/2011/02/springy-ouside-graphy-inside.html
+
+Dependency handling
+-------------------
+The sampleCode project requires 3 different transaction managers as dependencies: JOTM, Atomikos and Spring's Transaction Manager. While the first is available through maven, the
 other two aren't. To install them and get the project to compile, some steps are needed on your part.
 
 To install Atomikos Essentials, you will have to go to
