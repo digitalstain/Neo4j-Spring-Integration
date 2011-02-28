@@ -26,8 +26,8 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.transaction.jta.JtaTransactionManager;
 
 /**
- * Base class that outlines the expected behaviour of every transaction manager.
- * Sublasses are expected to override the <code>getConfigName()</code> to return
+ * Base class that outlines the expected behavior of every transaction manager.
+ * Subclasses are expected to override the <code>getConfigName()</code> to return
  * a String with the name of their configuration file and provide any
  * implementation specific configuration via <code>@Before</code> and
  * <code>@After</code> methods.
