@@ -11,22 +11,10 @@ http://digitalstain.blogspot.com/2011/02/springy-ouside-graphy-inside.html
 
 Dependency handling
 -------------------
-The sampleCode project requires 3 different transaction managers as dependencies: JOTM, Atomikos and Spring's Transaction Manager. While the first is available through maven, the
-other two aren't. To install them and get the project to compile, some steps are needed on your part.
+The sampleCode project requires 3 different transaction managers as dependencies: JOTM, Atomikos and Spring's Transaction Manager. While the first two are available through maven, the
+third one isn't. To install it and get the project to compile, some steps are needed on your part.
 
-To install Atomikos Essentials, you will have to go to
-
-http://www.atomikos.com/Main/TransactionsEssentialsDownloadForm
-
-complete the registration/download process, unpack the archive and install in maven the following jars by issuing:
-
-mvn install:install-file -DgroupId=com.atomikos -DartifactId=atomikos-util -Dpackaging=jar -Dversion=3.7.0M5 -Dfile=atomikos-util.jar -DgeneratePom=true
-mvn install:install-file -DgroupId=com.atomikos -DartifactId=transactions -Dpackaging=jar -Dversion=3.7.0M5 -Dfile=transactions.jar -DgeneratePom=true
-mvn install:install-file -DgroupId=com.atomikos -DartifactId=transactions-api -Dpackaging=jar -Dversion=3.7.0M5 -Dfile=transactions-api.jar -DgeneratePom=true
-mvn install:install-file -DgroupId=com.atomikos -DartifactId=transactions-jta -Dpackaging=jar -Dversion=3.7.0M5 -Dfile=transactions-jta.jar -DgeneratePom=true
-mvn install:install-file -DgroupId=com.atomikos -DartifactId=transactions-osgi -Dpackaging=jar -Dversion=3.7.0M5 -Dfile=transactions-osgi.jar -DgeneratePom=true
-
-To install the Spring Transaction Manager git clone the following url:
+git clone the following url:
 
 git://git.springsource.org/transaction-manager/transaction-manager.git
 

@@ -13,9 +13,9 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<spring.version>3.0.5.RELEASE</spring.version>
 		<slf4j.version>1.6.1</slf4j.version>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<neo4j.version>1.3-SNAPSHOT</neo4j.version>
 		<aspectj.version>1.6.10.RELEASE</aspectj.version>
+		<datastore-graph.version>1.0.0.M2</datastore-graph.version>
 	</properties>
 
 	<repositories>
@@ -58,6 +58,7 @@
 	</pluginRepositories>
 
 	<dependencies>
+		<!-- Object web's JOTM dependencies -->
 		<dependency>
 			<groupId>org.ow2.jotm</groupId>
 			<artifactId>jotm-core</artifactId>
@@ -68,6 +69,7 @@
 			<artifactId>ow2-connector-1.5-spec</artifactId>
 			<version>1.0-M1</version>
 		</dependency>
+
 		<!-- Spring dependencies -->
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -123,7 +125,16 @@
 			<artifactId>aspectjrt</artifactId>
 			<version>${aspectj.version}</version>
 		</dependency>
-
+		<dependency>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-graph-core</artifactId>
+			<version>${datastore-graph.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-neo4j</artifactId>
+			<version>${datastore-graph.version}</version>
+		</dependency>
 		<dependency>
 			<groupId>cglib</groupId>
 			<artifactId>cglib-nodep</artifactId>
@@ -141,19 +152,23 @@
 			<artifactId>neo4j-lucene-index</artifactId>
 			<version>${neo4j.version}</version>
 		</dependency>
-
+		<dependency>
+			<groupId>org.neo4j.jta</groupId>
+			<artifactId>spring-service-provider</artifactId>
+			<version>0.9-SNAPSHOT</version>
+		</dependency>
 		<dependency>
 			<groupId>org.apache.servicemix.bundles</groupId>
 			<artifactId>org.apache.servicemix.bundles.lucene</artifactId>
 			<version>3.0.1_2</version>
 		</dependency>
 
+		<!-- Spring's Transaction manager dependency NOTE! This is manually installed -->
 		<dependency>
 			<groupId>org.springsource</groupId>
 			<artifactId>transaction-core</artifactId>
 			<version>1.0</version>
 		</dependency>
-
 		<dependency>
 			<groupId>org.springsource</groupId>
 			<artifactId>transaction-log</artifactId>
@@ -167,11 +182,6 @@
 			<scope>test</scope>
 		</dependency>
 
-		<dependency>
-			<groupId>org.neo4j.jta</groupId>
-			<artifactId>spring-service-provider</artifactId>
-			<version>0.9-SNAPSHOT</version>
-		</dependency>
 
 		<dependency>
 			<groupId>com.experlog</groupId>
@@ -185,35 +195,35 @@
 			<version>5.1.6</version>
 		</dependency>
 
-		<dependency>
-			<groupId>org.neo4j</groupId>
-			<artifactId>neo4j-kernel</artifactId>
-			<version>1.3.M02</version>
-		</dependency>
+		<!-- dependency> <groupId>org.neo4j</groupId> <artifactId>neo4j-kernel</artifactId> 
+			<version>1.3.M02</version> </dependency -->
+
+		<!-- Atomikos' TransactionEssentials dependencies NOTE! This is manually 
+			installed -->
 		<dependency>
 			<groupId>com.atomikos</groupId>
 			<artifactId>atomikos-util</artifactId>
-			<version>3.7.0M5</version>
+			<version>3.7.0</version>
 		</dependency>
 		<dependency>
 			<groupId>com.atomikos</groupId>
 			<artifactId>transactions</artifactId>
-			<version>3.7.0M5</version>
+			<version>3.7.0</version>
 		</dependency>
 		<dependency>
 			<groupId>com.atomikos</groupId>
 			<artifactId>transactions-api</artifactId>
-			<version>3.7.0M5</version>
+			<version>3.7.0</version>
 		</dependency>
 		<dependency>
 			<groupId>com.atomikos</groupId>
 			<artifactId>transactions-jta</artifactId>
-			<version>3.7.0M5</version>
+			<version>3.7.0</version>
 		</dependency>
 		<dependency>
 			<groupId>com.atomikos</groupId>
 			<artifactId>transactions-osgi</artifactId>
-			<version>3.7.0M5</version>
+			<version>3.7.0</version>
 		</dependency>
 	</dependencies>
 
