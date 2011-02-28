@@ -1,5 +1,6 @@
 package org.neo4j.integration.spring;
 
+import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -59,8 +60,8 @@ public abstract class BaseTMIntegrationTest {
 		tm = ctx.getBean("jtaTransactionManager", JtaTransactionManager.class);
 		gds = ctx.getBean(GraphDatabaseService.class);
 		ds = ctx.getBean("dataSource", XADataSource.class);
-		ds.getXAConnection().getConnection()
-				.prepareStatement("delete from Node").execute();
+//		ds.getXAConnection().getConnection()
+//				.prepareStatement("delete from Node").execute();
 	}
 
 	@After
@@ -87,11 +88,20 @@ public abstract class BaseTMIntegrationTest {
 		tx.commit();
 		Node readBackOutsideOfTx = gds.getNodeById(node.getId());
 		assertEquals(node, readBackOutsideOfTx);
+		
+		tx = tm.getUserTransaction();
+		tx.begin();
+		index.add(node, "field", "value"+node.getId());
+		tx.commit();
 
 		tx = tm.getUserTransaction();
 		tx.begin();
 		Node readBackInsideOfTx = gds.getNodeById(node.getId());
 		assertEquals(node, readBackInsideOfTx);
+		indexHits = gds.index().forNodes("node").get("field", "value"+node.getId());
+		assertTrue(indexHits.hasNext());
+		assertEquals(node, indexHits.next());
+		assertFalse(indexHits.hasNext());
 		tx.commit();
 	}
 
