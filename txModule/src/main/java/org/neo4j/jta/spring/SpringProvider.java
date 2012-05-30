@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2002-2011 "Neo Technology,"
+ * Copyright (c) 2002-2012 "Neo Technology,"
  * Network Engine for Objects in Lund AB [http://neotechnology.com]
  *
  * This file is part of Neo4j.
@@ -17,15 +17,15 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-
 package org.neo4j.jta.spring;
 
 import org.neo4j.helpers.Service;
 import org.neo4j.kernel.impl.core.KernelPanicEventGenerator;
+import org.neo4j.kernel.impl.nioneo.store.FileSystemAbstraction;
 import org.neo4j.kernel.impl.transaction.AbstractTransactionManager;
 import org.neo4j.kernel.impl.transaction.TransactionManagerProvider;
-import org.neo4j.kernel.impl.transaction.TxFinishHook;
-import org.springframework.beans.factory.annotation.Configurable;
+import org.neo4j.kernel.impl.transaction.TxHook;
+import org.neo4j.kernel.impl.util.StringLogger;
 
 @Service.Implementation( TransactionManagerProvider.class )
 public class SpringProvider extends TransactionManagerProvider
@@ -36,8 +36,7 @@ public class SpringProvider extends TransactionManagerProvider
     }
 
     @Override
-    protected AbstractTransactionManager loadTransactionManager( String txLogDir,
-            KernelPanicEventGenerator kpe, TxFinishHook rollbackHook )
+    public AbstractTransactionManager loadTransactionManager(String txLogDir, KernelPanicEventGenerator kpe, TxHook rollbackHook, StringLogger msgLog, FileSystemAbstraction fileSystem)
     {
         return new SpringServiceImpl();
     }

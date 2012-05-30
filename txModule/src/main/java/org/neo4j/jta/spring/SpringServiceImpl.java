@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2002-2011 "Neo Technology,"
+ * Copyright (c) 2002-2012 "Neo Technology,"
  * Network Engine for Objects in Lund AB [http://neotechnology.com]
  *
  * This file is part of Neo4j.
@@ -17,7 +17,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-
 package org.neo4j.jta.spring;
 
 import javax.transaction.HeuristicMixedException;
@@ -48,12 +47,6 @@ public class SpringServiceImpl extends AbstractTransactionManager
 
     SpringServiceImpl()
     {
-    }
-
-    @Override
-    public void init( XaDataSourceManager xaDsManager )
-    {
-        delegate = jtaTransactionManager.getTransactionManager();
     }
 
     public void begin() throws NotSupportedException, SystemException
@@ -106,8 +99,23 @@ public class SpringServiceImpl extends AbstractTransactionManager
     }
 
     @Override
+    public void init() throws Throwable {
+        delegate = jtaTransactionManager.getTransactionManager();
+    }
+
+    @Override
+    public void start() throws Throwable {
+
+    }
+
+    @Override
     public void stop()
     {
         // Currently a no-op
+    }
+
+    @Override
+    public void shutdown() throws Throwable {
+
     }
 }
